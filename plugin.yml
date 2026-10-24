@@ -1,0 +1,23 @@
+name: AstraxChatFilter
+main: vn.astrax.chatfilter.ChatFilterPlugin
+version: ${project.version}
+api-version: '1.13'
+description: Chặn từ ngữ cấm trong chat
+softdepend: [LuckPerms]
+
+commands:
+  chatfilter:
+    description: Quản lý Astrax ChatFilter
+    aliases: [cf, astrax]
+    usage: /<command> <reload|add|remove|list|toggle>
+
+permissions:
+  astrax.chatfilter.admin:
+    description: Dùng lệnh /chatfilter
+    default: op
+  astrax.chatfilter.bypass:
+    description: Không bị lọc chat
+    default: op
+  astrax.chatfilter.notify:
+    description: Nhận thông báo khi có người vi phạm
+    default: op

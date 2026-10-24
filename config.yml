@@ -1,0 +1,66 @@
+# ===== Astrax ChatFilter =====
+# Quyền (dùng với LuckPerms):
+#   astrax.chatfilter.bypass  - không bị lọc chat
+#   astrax.chatfilter.notify  - nhận thông báo khi có người vi phạm
+#   astrax.chatfilter.admin   - dùng lệnh /chatfilter
+# Ví dụ: /lp group default permission set astrax.chatfilter.bypass false
+#        /lp group admin permission set astrax.chatfilter.bypass true
+
+enabled: true
+
+filter:
+  # BLOCK  = chặn hẳn tin nhắn
+  # CENSOR = thay từ cấm bằng ***, vẫn gửi tin nhắn
+  mode: BLOCK
+
+  # Chống lách luật: d.i.t, d i t, 1 (i), @ (a), có dấu / không dấu...
+  # Bật = bắt gắt hơn nhưng dễ chặn nhầm (vd: từ cấm nằm giữa từ khác)
+  strict-mode: false
+
+  # Đổi 0->o, 1->i, 3->e, 4->a, 5->s, @->a, $->s trước khi kiểm tra
+  leet-detection: true
+
+# Từ/cụm từ cấm. Không cần gõ dấu: "địt" và "dit" đều bắt được.
+banned-words:
+  - "dit me"
+  - "dm"
+  - "cc"
+  - "loz"
+  - "dcm"
+  - "fuck"
+  - "shit"
+
+# Regex nâng cao (so khớp trên tin nhắn gốc, không phân biệt hoa thường)
+banned-regex:
+  - "(?i)https?://\\S+"
+  - "(?i)\\b\\d{1,3}(\\.\\d{1,3}){3}\\b"
+
+# Từ được phép (tránh chặn nhầm), vd: "cc" nằm trong từ hợp lệ
+whitelist:
+  - "acc"
+  - "class"
+
+# Xử phạt khi vi phạm nhiều lần (đếm cho tới khi server restart / reload)
+punishment:
+  enabled: false
+  violations: 3
+  commands:
+    - "mute {player} 10m Spam từ cấm"
+    # - "kick {player} Vi phạm chat"
+
+notify-staff: true
+
+messages:
+  prefix: "&b[Astrax] &f"
+  blocked: "Tin nhắn của bạn chứa từ ngữ không được phép!"
+  censored: "Một số từ trong tin nhắn đã bị che."
+  staff-notify: "&e{player} &7vi phạm (&c{word}&7) &8[{count}]"
+  no-permission: "Bạn không có quyền dùng lệnh này."
+  reloaded: "Đã tải lại config."
+  added: "Đã thêm từ cấm: &e{word}"
+  removed: "Đã xóa từ cấm: &e{word}"
+  not-found: "Không tìm thấy từ đó."
+  already-exists: "Từ này đã có trong danh sách."
+  list: "Từ cấm ({count}): &e{words}"
+  toggled: "ChatFilter hiện: {state}"
+  usage: "Dùng: /cf <reload|add|remove|list|toggle>"
