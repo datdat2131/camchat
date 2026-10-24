@@ -20,6 +20,13 @@ filter:
   # Đổi 0->o, 1->i, 3->e, 4->a, 5->s, @->a, $->s trước khi kiểm tra
   leet-detection: true
 
+# Ký tự cấm tuyệt đối: chỉ cần tin nhắn có ký tự này là bị chặn luôn
+# (không phụ thuộc mode BLOCK/CENSOR). Có thể thêm "§" nếu muốn.
+blocked-characters:
+  enabled: true
+  characters:
+    - "&"
+
 # Từ/cụm từ cấm. Không cần gõ dấu: "địt" và "dit" đều bắt được.
 banned-words:
   - "dit me"
@@ -52,6 +59,7 @@ notify-staff: true
 
 messages:
   prefix: "&b[Astrax] &f"
+  blocked-char: "Không được dùng ký tự đặc biệt (&) trong chat!"
   blocked: "Tin nhắn của bạn chứa từ ngữ không được phép!"
   censored: "Một số từ trong tin nhắn đã bị che."
   staff-notify: "&e{player} &7vi phạm (&c{word}&7) &8[{count}]"

@@ -25,10 +25,15 @@ public class ChatListener implements Listener {
         if (p.hasPermission("astrax.chatfilter.bypass")) return;
 
         String original = e.getMessage();
-        String hit = plugin.getFilter().find(original);
+
+        // Ký tự cấm tuyệt đối (vd: &) -> chỉ cần có là chặn luôn, không che
+        String hit = findBlockedChar(original);
+        boolean forceBlock = hit != null;
+        if (hit == null) hit = plugin.getFilter().find(original);
         if (hit == null) return;
 
-        boolean censor = plugin.getConfig().getString("filter.mode", "BLOCK").equalsIgnoreCase("CENSOR");
+        boolean censor = !forceBlock
+                && plugin.getConfig().getString("filter.mode", "BLOCK").equalsIgnoreCase("CENSOR");
         boolean handled = false;
 
         if (censor) {
@@ -41,7 +46,7 @@ public class ChatListener implements Listener {
         }
         if (!handled) {
             e.setCancelled(true);
-            p.sendMessage(plugin.msg("blocked"));
+            p.sendMessage(plugin.msg(forceBlock ? "blocked-char" : "blocked"));
         }
 
         int count = plugin.getViolations().merge(p.getUniqueId(), 1, Integer::sum);
@@ -68,5 +73,14 @@ public class ChatListener implements Listener {
                 }
             });
         }
+    }
+
+    /** Trả về ký tự cấm đầu tiên có trong tin nhắn, hoặc null. */
+    private String findBlockedChar(String message) {
+        if (!plugin.getConfig().getBoolean("blocked-characters.enabled", true)) return null;
+        for (String ch : plugin.getConfig().getStringList("blocked-characters.characters")) {
+            if (!ch.isEmpty() && message.contains(ch)) return ch;
+        }
+        return null;
     }
 }

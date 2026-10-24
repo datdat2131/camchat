@@ -43,8 +43,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
         <configuration>
-          <includes><include>*.java</include></includes>
-          <release>17</release>
+          <includes><include>**/*.java</include></includes>
+          <excludes><exclude>target/**</exclude><exclude>.github/**</exclude></excludes>
         </configuration>
       </plugin>
     </plugins>
